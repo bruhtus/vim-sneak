@@ -382,22 +382,22 @@ if !hasmapto('<Plug>Sneak_S', 'o') && mapcheck('Z', 'o') ==# ''
   omap Z <Plug>Sneak_S
 endif
 
-if !hasmapto('<Plug>Sneak_;', 'n') && !hasmapto('<Plug>SneakNext', 'n') && mapcheck(';', 'n') ==# ''
-  nmap ; <Plug>Sneak_;
-  omap ; <Plug>Sneak_;
-  xmap ; <Plug>Sneak_;
-endif
-if !hasmapto('<Plug>Sneak_,', 'n') && !hasmapto('<Plug>SneakPrevious', 'n')
-  if mapcheck(',', 'n') ==# ''
-    nmap , <Plug>Sneak_,
-    omap , <Plug>Sneak_,
-    xmap , <Plug>Sneak_,
-  elseif mapcheck('\', 'n') ==# '' || mapcheck('\', 'n') ==# ','
-    nmap \ <Plug>Sneak_,
-    omap \ <Plug>Sneak_,
-    xmap \ <Plug>Sneak_,
-  endif
-endif
+" if !hasmapto('<Plug>Sneak_;', 'n') && !hasmapto('<Plug>SneakNext', 'n') && mapcheck(';', 'n') ==# ''
+"   nmap ; <Plug>Sneak_;
+"   omap ; <Plug>Sneak_;
+"   xmap ; <Plug>Sneak_;
+" endif
+" if !hasmapto('<Plug>Sneak_,', 'n') && !hasmapto('<Plug>SneakPrevious', 'n')
+"   if mapcheck(',', 'n') ==# ''
+"     nmap , <Plug>Sneak_,
+"     omap , <Plug>Sneak_,
+"     xmap , <Plug>Sneak_,
+"   elseif mapcheck('\', 'n') ==# '' || mapcheck('\', 'n') ==# ','
+"     nmap \ <Plug>Sneak_,
+"     omap \ <Plug>Sneak_,
+"     xmap \ <Plug>Sneak_,
+"   endif
+" endif
 
 if !hasmapto('<Plug>VSneakForward') && !hasmapto('<Plug>Sneak_s', 'v') && mapcheck('s', 'x') ==# ''
   xmap s <Plug>Sneak_s
