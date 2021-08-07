@@ -161,7 +161,7 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
     let s:st.reverse = a:reverse | let s:st.bounds = bounds | let s:st.inclusive = a:inclusive
 
     " Set temporary hooks on f/F/t/T so that we know when to reset Sneak.
-    call s:ft_hook()
+    " call s:ft_hook()
   endif
 
   let nextchar = searchpos('\_.', 'n'.(s.search_options_no_s))
@@ -285,17 +285,17 @@ func! s:map_reset_key(key, mode) abort
 endf
 
 " Sets temporary mappings to 'hook' into f/F/t/T.
-func! s:ft_hook() abort
-  for k in ['f', 't']
-    for m in ['n', 'x']
-      "if user mapped anything to f or t, do not map over it; unfortunately this
-      "also means we cannot reset ; or , when f or t is invoked.
-      if g:sneak#opt[k.'_reset'] && maparg(k, m) ==# ''
-        call s:map_reset_key(k, m) | call s:map_reset_key(toupper(k), m)
-      endif
-    endfor
-  endfor
-endf
+"func! s:ft_hook() abort
+"  for k in ['f', 't']
+"    for m in ['n', 'x']
+"      "if user mapped anything to f or t, do not map over it; unfortunately this
+"      "also means we cannot reset ; or , when f or t is invoked.
+"      if g:sneak#opt[k.'_reset'] && maparg(k, m) ==# ''
+"        call s:map_reset_key(k, m) | call s:map_reset_key(toupper(k), m)
+"      endif
+"    endfor
+"  endfor
+"endf
 
 func! s:getnchars(n, mode) abort
   let s = ''
