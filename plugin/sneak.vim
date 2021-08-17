@@ -38,11 +38,11 @@ func! sneak#init() abort
       \ ,'prompt'       : get(g:, 'sneak#prompt', '>')
       \ }
 
-  for k in ['f', 't'] "if user mapped f/t to Sneak, then disable f/t reset.
-    if maparg(k, 'n') =~# 'Sneak'
-      let g:sneak#opt[k.'_reset'] = 0
-    endif
-  endfor
+  " for k in ['f', 't'] "if user mapped f/t to Sneak, then disable f/t reset.
+  "   if maparg(k, 'n') =~# 'Sneak'
+  "     let g:sneak#opt[k.'_reset'] = 0
+  "   endif
+  " endfor
   lockvar g:sneak#opt
 endf
 
@@ -161,7 +161,7 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
     let s:st.reverse = a:reverse | let s:st.bounds = bounds | let s:st.inclusive = a:inclusive
 
     " Set temporary hooks on f/F/t/T so that we know when to reset Sneak.
-    call s:ft_hook()
+    " call s:ft_hook()
   endif
 
   let nextchar = searchpos('\_.', 'n'.(s.search_options_no_s))
@@ -171,7 +171,10 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
   endif
 
   for i in range(1, max([1, skip])) "jump to the [count]th match
-    let matchpos = s.dosearch()
+    " let matchpos = s.dosearch()
+    " add extra search option
+    " Ref: `:h search()`
+    let matchpos = s.dosearch('n')
     if 0 == max(matchpos)
       break
     else
@@ -285,17 +288,17 @@ func! s:map_reset_key(key, mode) abort
 endf
 
 " Sets temporary mappings to 'hook' into f/F/t/T.
-func! s:ft_hook() abort
-  for k in ['f', 't']
-    for m in ['n', 'x']
-      "if user mapped anything to f or t, do not map over it; unfortunately this
-      "also means we cannot reset ; or , when f or t is invoked.
-      if g:sneak#opt[k.'_reset'] && maparg(k, m) ==# ''
-        call s:map_reset_key(k, m) | call s:map_reset_key(toupper(k), m)
-      endif
-    endfor
-  endfor
-endf
+"func! s:ft_hook() abort
+"  for k in ['f', 't']
+"    for m in ['n', 'x']
+"      "if user mapped anything to f or t, do not map over it; unfortunately this
+"      "also means we cannot reset ; or , when f or t is invoked.
+"      if g:sneak#opt[k.'_reset'] && maparg(k, m) ==# ''
+"        call s:map_reset_key(k, m) | call s:map_reset_key(toupper(k), m)
+"      endif
+"    endfor
+"  endfor
+"endf
 
 func! s:getnchars(n, mode) abort
   let s = ''
@@ -328,124 +331,24 @@ func! s:getnchars(n, mode) abort
   return s
 endf
 
-" 2-char sneak
-nnoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap('', 2, 0, 2, 1)<cr>
-nnoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap('', 2, 1, 2, 1)<cr>
-xnoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap(visualmode(), 2, 0, 2, 1)<cr>
-xnoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap(visualmode(), 2, 1, 2, 1)<cr>
-onoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap(v:operator, 2, 0, 2, 1)<cr>
-onoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap(v:operator, 2, 1, 2, 1)<cr>
+"if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
+"  func! s:map_netrw_key(key) abort
+"    let expanded_map = maparg(a:key,'n')
+"    if !strlen(expanded_map) || expanded_map =~# '_Net\|FileBeagle'
+"      if strlen(expanded_map) > 0 "else, mapped to <nop>
+"        silent exe (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
+"      endif
+"      "unmap the default buffer-local mapping to allow Sneak's global mapping.
+"      silent! exe 'nunmap <buffer> '.a:key
+"    endif
+"  endf
 
-onoremap <silent> <Plug>SneakRepeat :<c-u>call sneak#wrap(v:operator, sneak#util#getc(), sneak#util#getc(), sneak#util#getc(), sneak#util#getc())<cr>
-
-" repeat motion (explicit--as opposed to implicit 'clever-s')
-nnoremap <silent> <Plug>Sneak_; :<c-u>call <SID>rpt('', 0)<cr>
-nnoremap <silent> <Plug>Sneak_, :<c-u>call <SID>rpt('', 1)<cr>
-xnoremap <silent> <Plug>Sneak_; :<c-u>call <SID>rpt(visualmode(), 0)<cr>
-xnoremap <silent> <Plug>Sneak_, :<c-u>call <SID>rpt(visualmode(), 1)<cr>
-onoremap <silent> <Plug>Sneak_; :<c-u>call <SID>rpt(v:operator, 0)<cr>
-onoremap <silent> <Plug>Sneak_, :<c-u>call <SID>rpt(v:operator, 1)<cr>
-
-" 1-char 'enhanced f' sneak
-nnoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap('', 1, 0, 1, 0)<cr>
-nnoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap('', 1, 1, 1, 0)<cr>
-xnoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap(visualmode(), 1, 0, 1, 0)<cr>
-xnoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap(visualmode(), 1, 1, 1, 0)<cr>
-onoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap(v:operator, 1, 0, 1, 0)<cr>
-onoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap(v:operator, 1, 1, 1, 0)<cr>
-
-" 1-char 'enhanced t' sneak
-nnoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap('', 1, 0, 0, 0)<cr>
-nnoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap('', 1, 1, 0, 0)<cr>
-xnoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap(visualmode(), 1, 0, 0, 0)<cr>
-xnoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap(visualmode(), 1, 1, 0, 0)<cr>
-onoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap(v:operator, 1, 0, 0, 0)<cr>
-onoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap(v:operator, 1, 1, 0, 0)<cr>
-
-nnoremap <silent> <Plug>SneakLabel_s :<c-u>call sneak#wrap('', 2, 0, 2, 2)<cr>
-nnoremap <silent> <Plug>SneakLabel_S :<c-u>call sneak#wrap('', 2, 1, 2, 2)<cr>
-xnoremap <silent> <Plug>SneakLabel_s :<c-u>call sneak#wrap(visualmode(), 2, 0, 2, 2)<cr>
-xnoremap <silent> <Plug>SneakLabel_S :<c-u>call sneak#wrap(visualmode(), 2, 1, 2, 2)<cr>
-onoremap <silent> <Plug>SneakLabel_s :<c-u>call sneak#wrap(v:operator, 2, 0, 2, 2)<cr>
-onoremap <silent> <Plug>SneakLabel_S :<c-u>call sneak#wrap(v:operator, 2, 1, 2, 2)<cr>
-
-if !exists('g:sneak_no_mappings')
-  if !hasmapto('<Plug>SneakForward') && !hasmapto('<Plug>Sneak_s', 'n') && mapcheck('s', 'n') ==# ''
-    nmap s <Plug>Sneak_s
-  endif
-  if !hasmapto('<Plug>SneakBackward') && !hasmapto('<Plug>Sneak_S', 'n') && mapcheck('S', 'n') ==# ''
-    nmap S <Plug>Sneak_S
-  endif
-  if !hasmapto('<Plug>Sneak_s', 'o') && mapcheck('z', 'o') ==# ''
-    omap z <Plug>Sneak_s
-  endif
-  if !hasmapto('<Plug>Sneak_S', 'o') && mapcheck('Z', 'o') ==# ''
-    omap Z <Plug>Sneak_S
-  endif
-
-  if !hasmapto('<Plug>Sneak_;', 'n') && !hasmapto('<Plug>SneakNext', 'n') && mapcheck(';', 'n') ==# ''
-    nmap ; <Plug>Sneak_;
-    omap ; <Plug>Sneak_;
-    xmap ; <Plug>Sneak_;
-  endif
-  if !hasmapto('<Plug>Sneak_,', 'n') && !hasmapto('<Plug>SneakPrevious', 'n')
-    if mapcheck(',', 'n') ==# ''
-      nmap , <Plug>Sneak_,
-      omap , <Plug>Sneak_,
-      xmap , <Plug>Sneak_,
-    elseif mapcheck('\', 'n') ==# '' || mapcheck('\', 'n') ==# ','
-      nmap \ <Plug>Sneak_,
-      omap \ <Plug>Sneak_,
-      xmap \ <Plug>Sneak_,
-    endif
-  endif
-
-  if !hasmapto('<Plug>VSneakForward') && !hasmapto('<Plug>Sneak_s', 'v') && mapcheck('s', 'x') ==# ''
-    xmap s <Plug>Sneak_s
-  endif
-  if !hasmapto('<Plug>VSneakBackward') && !hasmapto('<Plug>Sneak_S', 'v') && mapcheck('Z', 'x') ==# ''
-    xmap Z <Plug>Sneak_S
-  endif
-endif
-
-" redundant legacy mappings for backwards compatibility (must come _after_ the hasmapto('<Plug>Sneak_S') checks above)
-nmap <Plug>SneakForward   <Plug>Sneak_s
-nmap <Plug>SneakBackward  <Plug>Sneak_S
-xmap <Plug>VSneakForward  <Plug>Sneak_s
-xmap <Plug>VSneakBackward <Plug>Sneak_S
-xmap <Plug>VSneakNext     <Plug>Sneak_;
-xmap <Plug>VSneakPrevious <Plug>Sneak_,
-nmap <Plug>(SneakStreak)         <Plug>SneakLabel_s
-nmap <Plug>(SneakStreakBackward) <Plug>SneakLabel_S
-xmap <Plug>(SneakStreak)         <Plug>SneakLabel_s
-xmap <Plug>(SneakStreakBackward) <Plug>SneakLabel_S
-omap <Plug>(SneakStreak)         <Plug>SneakLabel_s
-omap <Plug>(SneakStreakBackward) <Plug>SneakLabel_S
-nmap <Plug>SneakNext     <Plug>Sneak_;
-nmap <Plug>SneakPrevious <Plug>Sneak_,
-xmap <Plug>SneakNext     <Plug>Sneak_;
-xmap <Plug>SneakPrevious <Plug>Sneak_,
-omap <Plug>SneakNext     <Plug>Sneak_;
-omap <Plug>SneakPrevious <Plug>Sneak_,
-
-if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
-  func! s:map_netrw_key(key) abort
-    let expanded_map = maparg(a:key,'n')
-    if !strlen(expanded_map) || expanded_map =~# '_Net\|FileBeagle'
-      if strlen(expanded_map) > 0 "else, mapped to <nop>
-        silent exe (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
-      endif
-      "unmap the default buffer-local mapping to allow Sneak's global mapping.
-      silent! exe 'nunmap <buffer> '.a:key
-    endif
-  endf
-
-  augroup sneak_netrw
-    autocmd!
-    autocmd FileType netrw,filebeagle autocmd sneak_netrw CursorMoved <buffer>
-          \ call <sid>map_netrw_key('s') | call <sid>map_netrw_key('S') | autocmd! sneak_netrw * <buffer>
-  augroup END
-endif
+"  augroup sneak_netrw
+"    autocmd!
+"    autocmd FileType netrw,filebeagle autocmd sneak_netrw CursorMoved <buffer>
+"          \ call <sid>map_netrw_key('s') | call <sid>map_netrw_key('S') | autocmd! sneak_netrw * <buffer>
+"  augroup END
+"endif
 
 
 let &cpo = s:cpo_save
