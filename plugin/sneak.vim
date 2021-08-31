@@ -331,8 +331,8 @@ func! s:getnchars(n, mode) abort
   return s
 endf
 
-nnoremap <silent> <Plug>SneakLabel_s :<C-u>call sneak#wrap('', 2, 0, 2, 2)<CR>
-nnoremap <silent> <Plug>SneakLabel_S :<C-u>call sneak#wrap('', 2, 1, 2, 2)<CR>
+nnoremap <silent> <Plug>SneakLabel_s m':<C-u>call sneak#wrap('', 2, 0, 2, 2)<CR>
+nnoremap <silent> <Plug>SneakLabel_S m':<C-u>call sneak#wrap('', 2, 1, 2, 2)<CR>
 
 "if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
 "  func! s:map_netrw_key(key) abort
