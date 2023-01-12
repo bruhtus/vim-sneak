@@ -334,6 +334,11 @@ endf
 nnoremap <silent> <Plug>SneakLabel_s m':<C-u>call sneak#wrap('', 2, 0, 2, 2)<CR>
 nnoremap <silent> <Plug>SneakLabel_S m':<C-u>call sneak#wrap('', 2, 1, 2, 2)<CR>
 
+xnoremap <silent> <Plug>SneakLabel_s
+      \ m':<C-u>call sneak#wrap(visualmode(), 2, 0, 2, 2)<CR>
+xnoremap <silent> <Plug>SneakLabel_S
+      \ m':<C-u>call sneak#wrap(visualmode(), 2, 1, 2, 2)<CR>
+
 "if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
 "  func! s:map_netrw_key(key) abort
 "    let expanded_map = maparg(a:key,'n')
