@@ -119,12 +119,12 @@ func! s:default_color(hlgroup, what, mode) abort
 endfunc
 
 func! s:init_hl() abort
-  exec "highlight default Sneak guifg=white guibg=magenta ctermfg=white ctermbg=".(&t_Co < 256 ? "magenta" : "201")
+  exec printf('highlight default Sneak guifg=white guibg=magenta ctermfg=%s ctermbg=%s', &t_Co < 256 ? 'white' : 231, &t_Co < 256 ? 'magenta' : 201)
 
   if &background ==# 'dark'
-    highlight default SneakScope guifg=black guibg=white ctermfg=0     ctermbg=255
+    exec printf('highlight default SneakScope guifg=black guibg=white ctermfg=%s ctermbg=%s', &t_Co < 256 ? 'black' : 16, &t_Co < 256 ? 'white' : 231)
   else
-    highlight default SneakScope guifg=white guibg=black ctermfg=255   ctermbg=0
+    exec printf('highlight default SneakScope guifg=white guibg=black ctermfg=%s ctermbg=%s', &t_Co < 256 ? 'white' : 231, &t_Co < 256 ? 'black' : 16)
   endif
 
   let guibg   = s:default_color('Sneak', 'bg', 'gui')
