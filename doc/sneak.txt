@@ -313,7 +313,7 @@ g:sneak#map_netrw = 0
        |:Vex|, filebeagle) and replace the default buffer-local s and
        S mappings with <leader>s and <leader>S.
 
-g:sneak#label = 0
+g:sneak#label = 1
 
     0: Disable |sneak-label-mode|.
 

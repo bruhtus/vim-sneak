@@ -188,7 +188,7 @@ func! sneak#rpt(op, reverse) abort
 
   let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
   call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, v:register, 1,
-        \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 0)
+        \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 1)
 endf
 
 " Entrypoint for `s`.
