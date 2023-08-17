@@ -15,18 +15,6 @@ func! sneak#cancel() abort
   return ''
 endf
 
-" Repeats the last motion.
-func! sneak#rpt(op, reverse) abort
-  if s:st.rst "reset by f/F/t/T
-    exec "norm! ".(sneak#util#isvisualop(a:op) ? "gv" : "").v:count1.(a:reverse ? "," : ";")
-    return
-  endif
-
-  let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
-  call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, v:register, 1,
-        \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 0)
-endf
-
 func! s:attach_autocmds() abort
   augroup sneak
     autocmd!
@@ -187,6 +175,18 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
     endif
   endif
 endf "}}}
+
+" Repeats the last motion.
+func! sneak#rpt(op, reverse) abort
+  if s:st.rst "reset by f/F/t/T
+    exec "norm! ".(sneak#util#isvisualop(a:op) ? "gv" : "").v:count1.(a:reverse ? "," : ";")
+    return
+  endif
+
+  let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
+  call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, v:register, 1,
+        \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 0)
+endf
 
 " Entrypoint for `s`.
 func! sneak#wrap(op, inputlen, reverse, inclusive, label) abort
