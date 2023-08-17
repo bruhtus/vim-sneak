@@ -61,7 +61,7 @@ NORMAL-MODE~
     [count]S{char}{char}     | Invoke backwards |sneak-vertical-scope|
     {operator}z{char}{char}  | Perform {operator} from the cursor to the next
                              | occurrence of {char}{char}
-    {operator}Z{char}{char}  | Perform {operator} from the cursor to the 
+    {operator}Z{char}{char}  | Perform {operator} from the cursor to the
                              | previous occurrence of {char}{char}
 
     NOTE: s and S go to the next/previous match immediately after invoking
@@ -446,7 +446,7 @@ sneak#reset(key)                                        *sneak#reset()*
 <
             Note: The <expr> modifier is required!
 
-sneak#state()                                           *sneak#state()*
+SneakState()                                           *SneakState()*
         Returns a read-only dictionary representing the current behavior.
 
         Values set at invocation (_not_ for repeat):
@@ -472,7 +472,7 @@ sneak#state()                                           *sneak#state()*
         on the current Sneak direction (`rptreverse` key):
 >
         nmap <silent> <expr> <tab> sneak#is_sneaking()
-              \ ? (sneak#state().rptreverse ? '<Plug>SneakLabel_S<cr>' : '<Plug>SneakLabel_s<cr>')
+              \ ? (SneakState().rptreverse ? '<Plug>SneakLabel_S<cr>' : '<Plug>SneakLabel_s<cr>')
               \ : '<Plug>Sneak_s'
 <
 ==============================================================================
