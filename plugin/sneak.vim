@@ -49,10 +49,10 @@ endf
 onoremap <silent> <Plug>SneakRepeat :<c-u>call sneak#wrap(v:operator, sneak#util#getc(), sneak#util#getc(), sneak#util#getc(), sneak#util#getc())<cr>
 
 " repeat motion (explicit--as opposed to implicit 'clever-s')
-nnoremap <silent> <Plug>Sneak_; :<c-u>call sneak#rpt('', 0)<cr>
-nnoremap <silent> <Plug>Sneak_, :<c-u>call sneak#rpt('', 1)<cr>
-xnoremap <silent> <Plug>Sneak_; :<c-u>call sneak#rpt(visualmode(), 0)<cr>
-xnoremap <silent> <Plug>Sneak_, :<c-u>call sneak#rpt(visualmode(), 1)<cr>
+nnoremap <silent> <Plug>Sneak_; m':<c-u>call sneak#rpt('', 0)<cr>
+nnoremap <silent> <Plug>Sneak_, m':<c-u>call sneak#rpt('', 1)<cr>
+xnoremap <silent> <Plug>Sneak_; m':<c-u>call sneak#rpt(visualmode(), 0)<cr>
+xnoremap <silent> <Plug>Sneak_, m':<c-u>call sneak#rpt(visualmode(), 1)<cr>
 onoremap <silent> <Plug>Sneak_; :<c-u>call sneak#rpt(v:operator, 0)<cr>
 onoremap <silent> <Plug>Sneak_, :<c-u>call sneak#rpt(v:operator, 1)<cr>
 
