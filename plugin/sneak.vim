@@ -39,7 +39,6 @@ func! s:init() abort
       \ 's_next'        : get(g:, 'sneak#s_next', 0)
       \ ,'absolute_dir' : get(g:, 'sneak#absolute_dir', 0)
       \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 1)
-      \ ,'map_netrw'    : get(g:, 'sneak#map_netrw', 0)
       \ ,'label'        : 1
       \ ,'label_esc'    : get(g:, 'sneak#label_esc', get(g:, 'sneak#streak_esc', "\<space>"))
       \ ,'prompt'       : get(g:, 'sneak#prompt', '>')
@@ -70,26 +69,6 @@ xnoremap <silent> <Plug>SneakLabel_s m':<c-u>call sneak#wrap(visualmode(), 2, 0,
 xnoremap <silent> <Plug>SneakLabel_S m':<c-u>call sneak#wrap(visualmode(), 2, 1, 2, 2)<cr>
 onoremap <silent> <Plug>SneakLabel_s :<c-u>call sneak#wrap(v:operator, 2, 0, 2, 2)<cr>
 onoremap <silent> <Plug>SneakLabel_S :<c-u>call sneak#wrap(v:operator, 2, 1, 2, 2)<cr>
-
-if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
-  func! s:map_netrw_key(key) abort
-    let expanded_map = maparg(a:key,'n')
-    if !strlen(expanded_map) || expanded_map =~# '_Net\|FileBeagle'
-      if strlen(expanded_map) > 0 "else, mapped to <nop>
-        silent exe (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
-      endif
-      "unmap the default buffer-local mapping to allow Sneak's global mapping.
-      silent! exe 'nunmap <buffer> '.a:key
-    endif
-  endf
-
-  augroup sneak_netrw
-    autocmd!
-    autocmd FileType netrw,filebeagle autocmd sneak_netrw CursorMoved <buffer>
-          \ call <sid>map_netrw_key('s') | call <sid>map_netrw_key('S') | autocmd! sneak_netrw * <buffer>
-  augroup END
-endif
-
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
