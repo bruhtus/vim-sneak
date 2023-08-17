@@ -324,7 +324,8 @@ g:sneak#label_esc = "\<Space>"                          *g:sneak#label_esc*
     Exit |sneak-label-mode| as if <Esc> were pressed.
         https://github.com/justinmk/vim-sneak/issues/122
 
-g:sneak#target_labels = ";aszxcfvqwertyuiopbnmABCEFGIJKNOPQRSTUVZ" *g:sneak#target_labels*
+                                                        *g:sneak#target_labels*
+g:sneak#target_labels = ";aszxcfvqwertyuiopbnmABCEFGIJKNOPQRSTUVZ"
 
     List of characters used to label the target locations. |sneak-label-mode|
 
