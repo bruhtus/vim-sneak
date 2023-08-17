@@ -31,7 +31,7 @@ func! s:init() abort
       \ ,'t_reset'      : get(g:, 'sneak#nextprev_t', get(g:, 'sneak#t_reset', 1))
       \ ,'s_next'       : get(g:, 'sneak#s_next', 0)
       \ ,'absolute_dir' : get(g:, 'sneak#absolute_dir', 0)
-      \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 0)
+      \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 1)
       \ ,'map_netrw'    : get(g:, 'sneak#map_netrw', 0)
       \ ,'label'        : get(g:, 'sneak#label', get(g:, 'sneak#streak', 0)) && (v:version >= 703) && has("conceal")
       \ ,'label_esc'    : get(g:, 'sneak#label_esc', get(g:, 'sneak#streak_esc', "\<space>"))

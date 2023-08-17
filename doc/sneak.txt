@@ -298,7 +298,7 @@ g:sneak#absolute_dir = 0
        backwards respectively.
        Note: With |sneak-clever-s|, s and S behave the same as |;| and |,|.
 
-g:sneak#use_ic_scs = 0
+g:sneak#use_ic_scs = 1
 
     0: Always case-sensitive
 
