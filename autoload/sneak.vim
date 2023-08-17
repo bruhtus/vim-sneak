@@ -178,6 +178,7 @@ endf "}}}
 
 " Repeats the last motion.
 func! sneak#rpt(op, reverse) abort
+  norm! m'
   let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
   call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, v:register, 1,
         \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 1)
@@ -185,6 +186,7 @@ endf
 
 " Entrypoint for `s`.
 func! sneak#wrap(op, inputlen, reverse, inclusive, label) abort
+  norm! m'
   let [cnt, reg] = [v:count1, v:register] "get count and register before doing _anything_, else they get overwritten.
   let is_similar_invocation = a:inputlen == s:st.inputlen && a:inclusive == s:st.inclusive
 
