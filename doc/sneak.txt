@@ -304,7 +304,7 @@ g:sneak#use_ic_scs = 0
 
     1: Case sensitivity is determined by 'ignorecase' and 'smartcase'.
 
-g:sneak#map_netrw = 1
+g:sneak#map_netrw = 0
 
     0: Don't do any special handling of "file manager" buffers (such as
        |netrw| or filebeagle).
