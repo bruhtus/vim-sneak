@@ -52,14 +52,6 @@ func! SneakState() abort
   return deepcopy(s:st)
 endf
 
-" 2-char sneak
-nnoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap('', 2, 0, 2, 1)<cr>
-nnoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap('', 2, 1, 2, 1)<cr>
-xnoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap(visualmode(), 2, 0, 2, 1)<cr>
-xnoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap(visualmode(), 2, 1, 2, 1)<cr>
-onoremap <silent> <Plug>Sneak_s :<c-u>call sneak#wrap(v:operator, 2, 0, 2, 1)<cr>
-onoremap <silent> <Plug>Sneak_S :<c-u>call sneak#wrap(v:operator, 2, 1, 2, 1)<cr>
-
 onoremap <silent> <Plug>SneakRepeat :<c-u>call sneak#wrap(v:operator, sneak#util#getc(), sneak#util#getc(), sneak#util#getc(), sneak#util#getc())<cr>
 
 " repeat motion (explicit--as opposed to implicit 'clever-s')
@@ -70,65 +62,12 @@ xnoremap <silent> <Plug>Sneak_, :<c-u>call sneak#rpt(visualmode(), 1)<cr>
 onoremap <silent> <Plug>Sneak_; :<c-u>call sneak#rpt(v:operator, 0)<cr>
 onoremap <silent> <Plug>Sneak_, :<c-u>call sneak#rpt(v:operator, 1)<cr>
 
-" 1-char 'enhanced f' sneak
-nnoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap('', 1, 0, 1, 0)<cr>
-nnoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap('', 1, 1, 1, 0)<cr>
-xnoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap(visualmode(), 1, 0, 1, 0)<cr>
-xnoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap(visualmode(), 1, 1, 1, 0)<cr>
-onoremap <silent> <Plug>Sneak_f :<c-u>call sneak#wrap(v:operator, 1, 0, 1, 0)<cr>
-onoremap <silent> <Plug>Sneak_F :<c-u>call sneak#wrap(v:operator, 1, 1, 1, 0)<cr>
-
-" 1-char 'enhanced t' sneak
-nnoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap('', 1, 0, 0, 0)<cr>
-nnoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap('', 1, 1, 0, 0)<cr>
-xnoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap(visualmode(), 1, 0, 0, 0)<cr>
-xnoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap(visualmode(), 1, 1, 0, 0)<cr>
-onoremap <silent> <Plug>Sneak_t :<c-u>call sneak#wrap(v:operator, 1, 0, 0, 0)<cr>
-onoremap <silent> <Plug>Sneak_T :<c-u>call sneak#wrap(v:operator, 1, 1, 0, 0)<cr>
-
 nnoremap <silent> <Plug>SneakLabel_s m':<c-u>call sneak#wrap('', 2, 0, 2, 2)<cr>
 nnoremap <silent> <Plug>SneakLabel_S m':<c-u>call sneak#wrap('', 2, 1, 2, 2)<cr>
 xnoremap <silent> <Plug>SneakLabel_s m':<c-u>call sneak#wrap(visualmode(), 2, 0, 2, 2)<cr>
 xnoremap <silent> <Plug>SneakLabel_S m':<c-u>call sneak#wrap(visualmode(), 2, 1, 2, 2)<cr>
 onoremap <silent> <Plug>SneakLabel_s :<c-u>call sneak#wrap(v:operator, 2, 0, 2, 2)<cr>
 onoremap <silent> <Plug>SneakLabel_S :<c-u>call sneak#wrap(v:operator, 2, 1, 2, 2)<cr>
-
-if !hasmapto('<Plug>SneakForward') && !hasmapto('<Plug>Sneak_s', 'n') && mapcheck('s', 'n') ==# ''
-  nmap s <Plug>Sneak_s
-endif
-if !hasmapto('<Plug>SneakBackward') && !hasmapto('<Plug>Sneak_S', 'n') && mapcheck('S', 'n') ==# ''
-  nmap S <Plug>Sneak_S
-endif
-if !hasmapto('<Plug>Sneak_s', 'o') && mapcheck('z', 'o') ==# ''
-  omap z <Plug>Sneak_s
-endif
-if !hasmapto('<Plug>Sneak_S', 'o') && mapcheck('Z', 'o') ==# ''
-  omap Z <Plug>Sneak_S
-endif
-
-if !hasmapto('<Plug>Sneak_;', 'n') && !hasmapto('<Plug>SneakNext', 'n') && mapcheck(';', 'n') ==# ''
-  nmap ; <Plug>Sneak_;
-  omap ; <Plug>Sneak_;
-  xmap ; <Plug>Sneak_;
-endif
-if !hasmapto('<Plug>Sneak_,', 'n') && !hasmapto('<Plug>SneakPrevious', 'n')
-  if mapcheck(',', 'n') ==# ''
-    nmap , <Plug>Sneak_,
-    omap , <Plug>Sneak_,
-    xmap , <Plug>Sneak_,
-  elseif mapcheck('\', 'n') ==# '' || mapcheck('\', 'n') ==# ','
-    nmap \ <Plug>Sneak_,
-    omap \ <Plug>Sneak_,
-    xmap \ <Plug>Sneak_,
-  endif
-endif
-
-if !hasmapto('<Plug>VSneakForward') && !hasmapto('<Plug>Sneak_s', 'v') && mapcheck('s', 'x') ==# ''
-  xmap s <Plug>Sneak_s
-endif
-if !hasmapto('<Plug>VSneakBackward') && !hasmapto('<Plug>Sneak_S', 'v') && mapcheck('Z', 'x') ==# ''
-  xmap Z <Plug>Sneak_S
-endif
 
 if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
   func! s:map_netrw_key(key) abort
