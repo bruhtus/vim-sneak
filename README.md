@@ -8,12 +8,8 @@ lines**, **operators** (including repeat `.` and [surround]), motion-repeat
 (`;` and `,`), **[keymaps]**, **visual** mode, **[multibyte]** text, and
 **macros**.
 
-Try *label-mode* for a minimalist alternative to
-[EasyMotion](https://github.com/Lokaltog/vim-easymotion):
-
-```vim
-let g:sneak#label = 1
-```
+This version only offer *label-mode* as a minimalist alternative to
+[EasyMotion](https://github.com/easymotion/vim-easymotion).
 
 Usage
 -----

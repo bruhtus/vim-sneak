@@ -44,98 +44,21 @@ DEFAULT MAPPINGS                                        *sneak-mappings*
 
 Full list of default mappings (see |sneak-custom-mappings| to change them):
 
-NORMAL-MODE~
-    Key Sequence             | Description
-    -------------------------|----------------------------------------------
-    s{char}{char}            | Go to the next occurrence of {char}{char}
-    S{char}{char}            | Go to the previous occurrence of {char}{char}
-    s{char}<Enter>           | Go to the next occurrence of {char}
-    S{char}<Enter>           | Go to the previous occurrence of {char}
-    s<Enter>                 | Repeat the last Sneak.
-    S<Enter>                 | Repeat the last Sneak, in reverse direction.
-    ;                        | Go to the [count]th next match
-    , or \                   | Go to the [count]th previous match
-    s                        | Go to the [count]th next match (see NOTE)
-    S                        | Go to the [count]th previous match (see NOTE)
-    [count]s{char}{char}     | Invoke |sneak-vertical-scope|
-    [count]S{char}{char}     | Invoke backwards |sneak-vertical-scope|
-    {operator}z{char}{char}  | Perform {operator} from the cursor to the next
-                             | occurrence of {char}{char}
-    {operator}Z{char}{char}  | Perform {operator} from the cursor to the
-                             | previous occurrence of {char}{char}
-
-    NOTE: s and S go to the next/previous match immediately after invoking
-    Sneak, if |sneak-clever-s| is enabled.
-
-VISUAL-MODE~
-    Key Sequence             | Description
-    -------------------------|----------------------------------------------
-    s{char}{char}            | Go to the next occurrence of {char}{char}
-    Z{char}{char}            | Go to the previous occurrence of {char}{char}
-    s{char}<Enter>           | Go to the next occurrence of {char}
-    Z{char}<Enter>           | Go to the previous occurrence of {char}
-    s<Enter>                 | Repeat the last Sneak.
-    Z<Enter>                 | Repeat the last Sneak, in reverse direction.
-    ;                        | Go to the [count]th next match
-    , or \                   | Go to the [count]th previous match
-    s                        | Go to the [count]th next match (NOTE above)
-    S                        | Go to the [count]th previous match (NOTE above)
-
-    NOTE: Z goes backwards in visual-mode because S is used by |surround|.
-
 LABEL-MODE~
     Key Sequence             | Description
     -------------------------|----------------------------------------------
     <Space> or <Esc>         | Exit |sneak-label-mode| where the cursor is.
-    <Tab>                    | Label the next set of matches.
-    <BS> or <S-Tab>          | Label the previous set of matches.
+    <CTRL-G>                 | Label the next set of matches.
+    <BS> or <CTRL-T>         | Label the previous set of matches.
 
 ------------------------------------------------------------------------------
 CUSTOM MAPPINGS                                         *sneak-custom-mappings*
 
-Sneak defines <Plug> keys so you can choose alternative mappings. But keep in
-mind that motions should be the least-friction mappings, because motion is the
-most common editor task.
-                                                        *sneak-disable-mappings*
-To "disable" Sneak default mappings, simply define any other mapping to the
-relevant <Plug> key. For example to prevent Sneak from remapping "s" and "S",
-just map to <Plug>Sneak_s and <Plug>Sneak_S as shown below.
-
 Available <Plug> keys: >
-
-    " 2-character Sneak (default)
-    nmap ? <Plug>Sneak_s
-    nmap ? <Plug>Sneak_S
-    " visual-mode
-    xmap ? <Plug>Sneak_s
-    xmap ? <Plug>Sneak_S
-    " operator-pending-mode
-    omap ? <Plug>Sneak_s
-    omap ? <Plug>Sneak_S
 
     " repeat motion
     map ? <Plug>Sneak_;
     map ? <Plug>Sneak_,
-
-    " 1-character enhanced 'f'
-    nmap ? <Plug>Sneak_f
-    nmap ? <Plug>Sneak_F
-    " visual-mode
-    xmap ? <Plug>Sneak_f
-    xmap ? <Plug>Sneak_F
-    " operator-pending-mode
-    omap ? <Plug>Sneak_f
-    omap ? <Plug>Sneak_F
-
-    " 1-character enhanced 't'
-    nmap ? <Plug>Sneak_t
-    nmap ? <Plug>Sneak_T
-    " visual-mode
-    xmap ? <Plug>Sneak_t
-    xmap ? <Plug>Sneak_T
-    " operator-pending-mode
-    omap ? <Plug>Sneak_t
-    omap ? <Plug>Sneak_T
 
     " label-mode
     nmap ? <Plug>SneakLabel_s
@@ -156,18 +79,8 @@ sequences as needed and searches for the keymapped result as expected. You
 probably want to set |g:sneak#target_labels| to labels that make sense for
 your preferred 'keymap'.
 
-[count]s enters |sneak-vertical-scope| mode.
+`;` and `,` repeat the last `s` and `S`.
 
-`;` and `,` repeat the last `s` and `S`. They also work correctly with `f` and `t`
-(unless you or another plugin have mapped `f` or `t` to a custom mapping).
-[count]; and [count], skip to the [count]th match, similar to the
-behavior of [count]f and [count]t.
-
-Note: If your mapleader is |,| then Sneak maps |\| instead of |,|. You can
-override this by specifying some other mapping, e.g.: >
-
-        map gS <Plug>Sneak_,
-<
                                                         *sneak-clever-s*
 Similar to clever-f[3], immediately after invoking Sneak you can move to the
 next match by hitting `s` (or `S`) again. If you instead move the cursor or do
@@ -178,7 +91,6 @@ mapped to <Plug>Sneak_;). To enable "clever s": >
 <
 Sneak adds to the |jumplist| only on the initial invocation; so after moving
 around with ; and , (or s/S) you can easily go back via |CTRL-O| or |``|.
-    - Repeat invocations (;/,) do not add to the jumplist.
     - Consecutive invocations ("s" immediately after s/S/;/,)
       do not add to the jumplist.
 
@@ -200,27 +112,12 @@ if you undo followed by dot-repeat again, it waits for input.  This bug is not
 related to Sneak, it happens with builtin motions also.
 
 ------------------------------------------------------------------------------
-VERTICAL SCOPE                                          *sneak-vertical-scope*
-
-Sneak has a unique feature called "vertical scope" search. This is invoked by
-prefixing `s` or `S` with a [count]. Then the search is limited to a column of
-width of 2×[count]. Vertical-scope never invokes |sneak-label-mode|.
-
-Use-cases:
-    - CSV file
-    - man page (example: search for "-e" in `man bash`)
-    - hex editing :%!xxd
-    - any columnar layout
-
-------------------------------------------------------------------------------
 LABEL-MODE                              *sneak-label-mode* *sneak-streak-mode*
 
                                                         *g:sneak#label*
 Label-mode minimizes the steps to jump to a location, using a clever interface
-similar to EasyMotion. If enabled, Sneak overlays text with "labels" which can
-be jumped-to by typing the label character. To enable label-mode: >
-
-    let g:sneak#label = 1
+similar to EasyMotion. Sneak overlays text with "labels" which can be jumped-to
+by typing the label character.
 
 Label-mode features:
 - Jump to a label by typing its character.              *sneak-fallthrough*
@@ -233,9 +130,6 @@ Label-mode features:
   off-screen matches.
 
 Standard features behave as usual:
-- If `s` is prefixed with [count] then |sneak-vertical-scope| is invoked, not
-  label-mode.
-- Skip to the next or previous match with |;| or |,|
 - Return to your original location via |CTRL-O| or |``|
 - Use any |operator|, including |surround|.
 - Repeat operations with |.| (dot).
@@ -250,8 +144,8 @@ Sneak compared to EasyMotion:
 ==============================================================================
 CONFIGURATION                                           *sneak-config*
 
-Sneak is designed with sane, effective defaults, to avoid configuration as
-much as possible. But you can change them as follows.
+This version of sneak only come with label mode <Plug> mapping as default. You
+should configure your own mapping yourself.
 
 ------------------------------------------------------------------------------
 OPTIONS                                                 *sneak-options*
@@ -282,21 +176,6 @@ g:sneak#use_ic_scs = 1
     0: Always case-sensitive
 
     1: Case sensitivity is determined by 'ignorecase' and 'smartcase'.
-
-g:sneak#map_netrw = 0
-
-    0: Don't do any special handling of "file manager" buffers (such as
-       |netrw| or filebeagle).
-
-    1: Set up Sneak mappings (s and S) in "file manager" buffers (|:Ex|,
-       |:Vex|, filebeagle) and replace the default buffer-local s and
-       S mappings with <leader>s and <leader>S.
-
-g:sneak#label = 1
-
-    0: Disable |sneak-label-mode|.
-
-    1: Enable |sneak-label-mode| if the Vim |+conceal| feature is available.
 
 g:sneak#label_esc = "\<Space>"                          *g:sneak#label_esc*
 
@@ -471,7 +350,7 @@ Sneak was inspired by vim-seek, vim-easymotion, clever-f, and Tim Pope's
 plugins.
 
     https://github.com/goldfeld/vim-seek
-    https://github.com/Lokaltog/vim-easymotion
+    https://github.com/easymotion/vim-easymotion
     https://github.com/rhysd/clever-f.vim
 
 ==============================================================================

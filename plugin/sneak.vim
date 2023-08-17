@@ -3,7 +3,7 @@
 " Version:      1.8
 " License:      MIT
 
-if exists('g:loaded_sneak_plugin') || &compatible || v:version < 700
+if exists('g:loaded_sneak_plugin') || &compatible || (v:version < 703 && !has('conceal'))
   finish
 endif
 let g:loaded_sneak_plugin = 1
@@ -40,7 +40,7 @@ func! s:init() abort
       \ ,'absolute_dir' : get(g:, 'sneak#absolute_dir', 0)
       \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 1)
       \ ,'map_netrw'    : get(g:, 'sneak#map_netrw', 0)
-      \ ,'label'        : get(g:, 'sneak#label', get(g:, 'sneak#streak', 1)) && (v:version >= 703) && has("conceal")
+      \ ,'label'        : 1
       \ ,'label_esc'    : get(g:, 'sneak#label_esc', get(g:, 'sneak#streak_esc', "\<space>"))
       \ ,'prompt'       : get(g:, 'sneak#prompt', '>')
       \ }
