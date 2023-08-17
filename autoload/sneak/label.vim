@@ -60,9 +60,9 @@ func! sneak#label#to(s, v, label) abort
   while 1
     let choice = s:do_label(a:s, a:v, a:s._reverse, a:label)
     let seq .= choice
-    if choice =~# "^\<S-Tab>\\|\<BS>$"
+    if choice =~# "^\<C-t>\\|\<BS>$"
       call a:s.init(a:s._input, a:s._repeatmotion, 1)
-    elseif choice ==# "\<Tab>"
+    elseif choice ==# "\<C-g>"
       call a:s.init(a:s._input, a:s._repeatmotion, 0)
     else
       return seq
@@ -108,8 +108,8 @@ func! s:do_label(s, v, reverse, label) abort "{{{
         \ ? mappedto =~# '<Plug>Sneak\(_,\|Previous\)'
         \ : mappedto =~# '<Plug>Sneak\(_;\|Next\)'
 
-  if choice =~# "\\v^\<Tab>|\<S-Tab>|\<BS>$"  " Decorate next N matches.
-    if (!a:reverse && choice ==# "\<Tab>") || (a:reverse && choice =~# "^\<S-Tab>\\|\<BS>$")
+  if choice =~# "\\v^\<C-g>|\<C-t>|\<BS>$"  " Decorate next N matches.
+    if (!a:reverse && choice ==# "\<C-g>") || (a:reverse && choice =~# "^\<C-t>\\|\<BS>$")
       call cursor(overflow[0], overflow[1])
     endif  " ...else we just switched directions, do not overflow.
   elseif (strlen(g:sneak#opt.label_esc) && choice ==# g:sneak#opt.label_esc)
@@ -210,7 +210,7 @@ endf
 
 " Returns 1 if a:key is invisible or special.
 func! s:is_special_key(key) abort
-  return -1 != index(["\<Esc>", "\<C-c>", "\<Space>", "\<CR>", "\<Tab>"], a:key)
+  return -1 != index(["\<Esc>", "\<C-c>", "\<Space>", "\<CR>", "\<C-g>"], a:key)
     \ || maparg(a:key, 'n') =~# '<Plug>Sneak\(_;\|_,\|Next\|Previous\)'
     \ || (g:sneak#opt.s_next && maparg(a:key, 'n') =~# '<Plug>Sneak\(_s\|Forward\)')
 endf
