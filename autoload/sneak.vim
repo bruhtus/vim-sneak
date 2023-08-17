@@ -79,7 +79,7 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
   let s:st.rptreverse = a:reverse
   if !a:repeatmotion "this is a new (not repeat) invocation
     "persist even if the search fails, because the _reverse_ direction might have a match.
-    let s:st.rst = 0 | let s:st.input = a:input | let s:st.inputlen = a:inputlen
+    let s:st.input = a:input | let s:st.inputlen = a:inputlen
     let s:st.reverse = a:reverse | let s:st.bounds = bounds | let s:st.inclusive = a:inclusive
   endif
 
