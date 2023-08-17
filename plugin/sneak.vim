@@ -14,8 +14,16 @@ set cpo&vim
 " Persist state for repeat.
 "     opfunc    : &operatorfunc at g@ invocation.
 "     opfunc_st : State during last 'operatorfunc' (g@) invocation.
-let s:st = { 'input':'', 'inputlen':0, 'reverse':0, 'bounds':[0,0],
-      \'inclusive':0, 'label':'', 'opfunc':'', 'opfunc_st':{} }
+let s:st = {
+      \ 'input': '',
+      \ 'inputlen': 0,
+      \ 'reverse': 0,
+      \ 'bounds': [0,0],
+      \ 'inclusive': 0,
+      \ 'label': '',
+      \ 'opfunc': '',
+      \ 'opfunc_st': {}
+      \ }
 
 if exists('##OptionSet')
   augroup sneak_optionset
