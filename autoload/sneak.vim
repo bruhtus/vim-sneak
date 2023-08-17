@@ -93,7 +93,10 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
   endif
 
   for i in range(1, max([1, skip])) "jump to the [count]th match
-    let matchpos = s.dosearch()
+    " add extra search option
+    " Ref: `:h search()`
+    " let matchpos = s.dosearch()
+    let matchpos = s.dosearch('n')
     if 0 == max(matchpos)
       break
     else
