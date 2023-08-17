@@ -182,9 +182,7 @@ around with ; and , (or s/S) you can easily go back via |CTRL-O| or |``|.
     - Consecutive invocations ("s" immediately after s/S/;/,)
       do not add to the jumplist.
 
-s<Enter> ("s" followed by Enter) always repeats the last search, even if |;|
-and |,| were reset by |f| or |t|. This is especially useful for re-invoking
-|sneak-label-mode| (because |;| and |,| never invoke label-mode).
+s<Enter> ("s" followed by Enter) always repeats the last search.
 
 ------------------------------------------------------------------------------
 OPERATIONS
@@ -261,25 +259,6 @@ OPTIONS                                                 *sneak-options*
 To change an option, add a |let| statement in your |vimrc|. Example: >
     let g:sneak#use_ic_scs = 0
 <
-g:sneak#f_reset = 1
-g:sneak#t_reset = 1
-
-    Note: Defaults to 0 if you mapped f (or t) to any |sneak-mappings|.
-
-    0: Pressing |f| (or |t|) will NOT clear the last Sneak search. So you could
-       define different maps for <Plug>Sneak_; or <Plug>Sneak_, and still
-       use ; and , for |f| and |t| as usual.
-
-    1: Pressing |f| (or |t|) causes Sneak to "reset" so that |;| and |,| will apply
-       to the last f (or t) motion instead of the last s or S. This makes it
-       possible to use ; and , for all three motions (f, t, and s).
-
-       Note: if f (or t) was already mapped by you or a plugin, Sneak will
-       not override the existing mapping unless you explicitly set f_reset
-       (or t_reset). This means Sneak will not be able to reset ; or , when
-       you invoke f or t. See the README.md FAQ regarding "f-enhancement"
-       plugins.
-
 g:sneak#s_next = 0
 
     0: Disable |sneak-clever-s|.
@@ -429,24 +408,6 @@ sneak#cancel()                                          *sneak#cancel()*
         |sneak#is_sneaking()| to return 0.
             https://github.com/justinmk/vim-sneak/issues/106
 
-sneak#reset(key)                                        *sneak#reset()*
-        Prevents Sneak from hijacking |;| and |,| until the next invocation of
-        Sneak. This is useful if you have remapped the Vim built-in |f| or
-        |t| to another key and you still want to use |;| and |,| for both Sneak
-        and your custom "f" mapping.
-            https://github.com/justinmk/vim-sneak/issues/114
-
-        For example, to use "a" as your "f":
->
-            nnoremap <expr> a sneak#reset('f')
-            nnoremap <expr> A sneak#reset('F')
-            xnoremap <expr> a sneak#reset('f')
-            xnoremap <expr> A sneak#reset('F')
-            onoremap <expr> a sneak#reset('f')
-            onoremap <expr> A sneak#reset('F')
-<
-            Note: The <expr> modifier is required!
-
 SneakState()                                            *SneakState()*
         Returns a read-only dictionary representing the current behavior.
 
@@ -461,8 +422,6 @@ SneakState()                                            *SneakState()*
             inputlen        length of the current search string
             reverse         0: invoked as forward motion `s`
                             1: invoked as backward motion `S`
-            rst             0: |;| and |,| should repeat the most recent Sneak
-                            1: after calling |sneak#reset()|
 
         Values updated on each repeat (|;| |,|):
             KEY             VALUE~

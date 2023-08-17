@@ -30,7 +30,7 @@ Sneak is invoked with `s` followed by exactly two characters:
 * Type `3;` to skip to the third match from the current position.
 * Type `ctrl-o` or ``` `` ``` to go back to the starting point.
     * This is a built-in Vim motion; Sneak adds to Vim's [jumplist](http://vimdoc.sourceforge.net/htmldoc/motion.html#jumplist)
-      *only* on `s` invocation—not repeats—so you can 
+      *only* on `s` invocation—not repeats—so you can
       abandon a trail of `;` or `,` by a single `ctrl-o` or ``` `` ```.
 * Type `s<Enter>` at any time to repeat the last Sneak-search.
 * Type `S` to search backwards.
@@ -100,18 +100,6 @@ By the way: `cl` is equivalent to `s`, and `cc` is equivalent to `S`.
 ```vim
 map f <Plug>Sneak_s
 map F <Plug>Sneak_S
-```
-
-### How can I replace `f` and/or `t` with *one-character* Sneak?
-
-Sneak has `<Plug>` mappings for `f` and `t` 1-character-sneak.
-These mappings do *not* invoke label-mode, even if you have it enabled.
-
-```vim
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
 ```
 
 Related
