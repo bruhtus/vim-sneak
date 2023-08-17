@@ -81,9 +81,6 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
     "persist even if the search fails, because the _reverse_ direction might have a match.
     let s:st.rst = 0 | let s:st.input = a:input | let s:st.inputlen = a:inputlen
     let s:st.reverse = a:reverse | let s:st.bounds = bounds | let s:st.inclusive = a:inclusive
-
-    " Set temporary hooks on f/F/t/T so that we know when to reset Sneak.
-    call s:ft_hook()
   endif
 
   let nextchar = searchpos('\_.', 'n'.(s.search_options_no_s))
@@ -181,11 +178,6 @@ endf "}}}
 
 " Repeats the last motion.
 func! sneak#rpt(op, reverse) abort
-  if s:st.rst "reset by f/F/t/T
-    exec "norm! ".(sneak#util#isvisualop(a:op) ? "gv" : "").v:count1.(a:reverse ? "," : ";")
-    return
-  endif
-
   let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
   call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, v:register, 1,
         \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 1)
@@ -213,39 +205,6 @@ func! sneak#wrap(op, inputlen, reverse, inclusive, label) abort
       doautocmd <nomodeline> User SneakLeave
     endif
   endif
-endf
-
-func! sneak#reset(key) abort
-  let c = sneak#util#getchar()
-
-  let s:st.rst = 1
-  let s:st.reverse = 0
-  for k in ['f', 't'] "unmap the temp mappings
-    if g:sneak#opt[k.'_reset']
-      silent! exec 'unmap '.k
-      silent! exec 'unmap '.toupper(k)
-    endif
-  endfor
-
-  "count is prepended implicitly by the <expr> mapping
-  return a:key.c
-endf
-
-func! s:map_reset_key(key, mode) abort
-  exec printf("%snoremap <silent> <expr> %s sneak#reset('%s')", a:mode, a:key, a:key)
-endf
-
-" Sets temporary mappings to 'hook' into f/F/t/T.
-func! s:ft_hook() abort
-  for k in ['f', 't']
-    for m in ['n', 'x']
-      "if user mapped anything to f or t, do not map over it; unfortunately this
-      "also means we cannot reset ; or , when f or t is invoked.
-      if g:sneak#opt[k.'_reset'] && maparg(k, m) ==# ''
-        call s:map_reset_key(k, m) | call s:map_reset_key(toupper(k), m)
-      endif
-    endfor
-  endfor
 endf
 
 func! s:getnchars(n, mode) abort
@@ -278,4 +237,3 @@ func! s:getnchars(n, mode) abort
   endfor
   return s
 endf
-

@@ -27,9 +27,8 @@ endif
 func! s:init() abort
   unlockvar g:sneak#opt
   "options                                 v-- for backwards-compatibility
-  let g:sneak#opt = { 'f_reset' : get(g:, 'sneak#nextprev_f', get(g:, 'sneak#f_reset', 1))
-      \ ,'t_reset'      : get(g:, 'sneak#nextprev_t', get(g:, 'sneak#t_reset', 1))
-      \ ,'s_next'       : get(g:, 'sneak#s_next', 0)
+  let g:sneak#opt = {
+      \ 's_next'        : get(g:, 'sneak#s_next', 0)
       \ ,'absolute_dir' : get(g:, 'sneak#absolute_dir', 0)
       \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 1)
       \ ,'map_netrw'    : get(g:, 'sneak#map_netrw', 0)
@@ -38,11 +37,6 @@ func! s:init() abort
       \ ,'prompt'       : get(g:, 'sneak#prompt', '>')
       \ }
 
-  for k in ['f', 't'] "if user mapped f/t to Sneak, then disable f/t reset.
-    if maparg(k, 'n') =~# 'Sneak'
-      let g:sneak#opt[k.'_reset'] = 0
-    endif
-  endfor
   lockvar g:sneak#opt
 endf
 
