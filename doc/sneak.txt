@@ -324,7 +324,7 @@ g:sneak#label_esc = "\<Space>"                          *g:sneak#label_esc*
     Exit |sneak-label-mode| as if <Esc> were pressed.
         https://github.com/justinmk/vim-sneak/issues/122
 
-g:sneak#target_labels = ";sftunq/SFGHLTUNRMQZ?0"        *g:sneak#target_labels*
+g:sneak#target_labels = ";aszxcfvqwertyuiopbnmABCEFGIJKNOPQRSTUVZ" *g:sneak#target_labels*
 
     List of characters used to label the target locations. |sneak-label-mode|
 
@@ -446,7 +446,7 @@ sneak#reset(key)                                        *sneak#reset()*
 <
             Note: The <expr> modifier is required!
 
-SneakState()                                           *SneakState()*
+SneakState()                                            *SneakState()*
         Returns a read-only dictionary representing the current behavior.
 
         Values set at invocation (_not_ for repeat):

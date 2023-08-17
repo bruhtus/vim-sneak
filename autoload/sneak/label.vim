@@ -5,7 +5,10 @@
 "   problem:  [before 7.4.792] keyword highlight takes priority over conceal.
 "   strategy: syntax clear | [do the conceal] | let &syntax=s:o_syntax
 
-let g:sneak#target_labels = get(g:, 'sneak#target_labels', ";sftunq/SFGHLTUNRMQZ?0")
+let g:sneak#target_labels = get(g:,
+      \ 'sneak#target_labels',
+      \ ';aszxcfvqwertyuiopbnmABCEFGIJKNOPQRSTUVZ'
+      \ )
 
 let s:clear_syntax = !has('patch-7.4.792')
 let s:matchmap = {}
