@@ -170,6 +170,12 @@ func! sneak#to(op, input, inputlen, count, register, repeatmotion, reverse, incl
     silent! call repeat#set(seq, a:count)
 
     let s:st.label = target
+
+    " TODO: also handle other operator such as gu, gU, >, <, etc.
+    if target == "\<Esc>" && a:op ==# 'c'
+      call feedkeys((col('.') > 1 && col('.') < col('$') ? "\<RIGHT>" : '') . "\<C-\>\<C-G>", 'n')
+    endif
+
     if empty(s:st.opfunc_st)
       let s:st.opfunc_st = filter(deepcopy(s:st), 'v:key !=# "opfunc_st"')
     endif
